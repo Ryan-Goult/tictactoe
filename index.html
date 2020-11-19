@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.Square{
+				width: 200px;
+				height: 200px;
+				color: white;
+				text-align: center;
+				font-size: 75px;
+				font-weight: bold;
+				font-family: Cursive;
+				background-color: black;
+				border-style: solid;
+			}
+			body{
+				background-color: black;
+			}
+			h1{
+				color: white;
+				text-align: center;
+			}
+			a{
+				color:white;
+				font-size: 20px;
+				text-decoration: none;
+				border-style: solid;
+			}
+			a:hover{
+				color: black;
+				background-color: red;
+			}
+			.scoreboard{
+				color: white;
+				border-style: solid;
+				font-size: 30px;
+				margin: auto;
+				position: absolute;
+				top; 0;
+				right: 0;
+				margin-top: -50px;
+				border: 2px solid #ccc;
+			}
+			
+			ul {
+				display:flex;
+				list-style:none;
+				margin:0;
+				padding:0;
+				width:100%;
+			}
+			li {
+				margin:0;
+				padding:0;
+				flex-grow:1;
+			}
+		</style>
+		
+		<script>	
+			
+			function startGame(){
+			
+				for (var i = 1; i <= 9; i = i + 1){
+					clearBox(i);
+				}
+				
+				document.turn = "X";
+				if (Math.random() < 0.5){
+					document.turn = "O";
+				}
+				document.winner = null;
+				setMessage(document.turn + " gets to start.");
+			}
+			
+			function setMessage(msg) {
+				document.getElementById("message").innerText = msg;
+			}
+			
+			function nextMove(square){
+				if (document.winner != null){
+					setMessage(document.winner + " already won the game.");
+					
+				}else if (square.innerText == ''){
+					square.innerText = document.turn;
+					switchTurn();
+				}
+				else{
+					setMessage("That square is already used.");
+				}
+			}
+			
+			function switchTurn(){
+				if (checkForWinner(document.turn)){
+					alert("Congratulations, " + document.turn + "! You win!");
+					document.winner = document.turn;
+				} else if (document.turn == "X"){
+					document.turn = "O";
+					setMessage("It's " + document.turn + "'s turn.");
+				}
+				else{
+					document.turn = "X";
+					setMessage("It's " + document.turn + "'s turn.");
+				}
+			}
+			
+			function updateScoreboard(){
+				var score_x = 0;
+				var score_o = 0;
+				if (document.winner = "X"){
+					document.getElementById("score_x").innerText = score_x += 1;
+				}
+				else{
+					document.getElementById("score_o").innerText = score_o += 1;
+				}
+			}
+			
+			function checkForWinner(move){
+				var result = false;
+				if (checkRow(1, 2, 3, move) || 
+					checkRow(4, 5, 6, move) || 
+					checkRow(7, 8, 9, move) ||
+					checkRow(1, 4, 7, move) ||
+					checkRow(2, 5, 8, move) ||
+					checkRow(3, 6, 9, move) ||
+					checkRow(1, 5, 9, move) ||
+					checkRow(3, 5, 7, move)){
+					
+					result = true;
+				}
+				return result;
+			}
+			
+			function checkRow(a, b, c, move){
+				var result = false;
+				if (getBox(a) == move && getBox(b) == move && getBox(c) == move){
+					result = true;
+				}
+				return result;
+			}
+			
+			function getBox(number){
+				return document.getElementById("s" + number).innerText;
+			}
+			
+			function clearBox(number){
+				document.getElementById("s" + number).innerText = "";
+			}
+		</script>
+	</head>
+
+	<body onload="startGame();" style="text-align:center;">
+	<div id="so" style="display:none"></div>
+		<h1>Welcome to my Tic Tac Toe game!</h1>
+		<div id="message" style="color:white;text-align:center;">messages will go here</div>
+		
+		<div class="scoreboard">
+		<ul>
+			<li>X: <span id="score_x"></span></li>
+			<li>O: <span id="score_o"></span></li>
+		</ul>
+	</div>
+		
+		<table align="center">
+			<tr>
+				<td style="border-top-style:hidden;border-left-style:hidden;" id="s1" class="Square" onclick="nextMove(this);"></td>
+				<td style="border-top-style:hidden;" id="s2" class="Square" onclick="nextMove(this);"></td>
+				<td style="border-top-style:hidden;border-right-style:hidden;" id="s3" class="Square" onclick="nextMove(this);"></td>
+			</tr>
+			<tr>
+				<td style="border-left-style:hidden;" id="s4" class="Square" onclick="nextMove(this);"></td>
+				<td id="s5" class="Square" onclick="nextMove(this);"></td>
+				<td style="border-right-style:hidden;" id="s6" class="Square" onclick="nextMove(this);"></td>
+			</tr>
+			<tr>
+				<td style="border-bottom-style:hidden;border-left-style:hidden;" id="s7" class="Square" onclick="nextMove(this);"></td>
+				<td style="border-bottom-style:hidden;" id="s8" class="Square" onclick="nextMove(this);"></td>
+				<td style="border-bottom-style:hidden;border-right-style:hidden;" id="s9" class="Square" onclick="nextMove(this);"></td>
+			</tr>
+		</table>
+		
+		<a href="javascript:startGame();">Start Over</a>
+	</body
+</html>
